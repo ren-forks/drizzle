@@ -11,10 +11,11 @@ export function * initializeDrizzle (action) {
   try {
     const options = action.options
     const web3Options = options.web3
+    const networkWhitelist = options.networkWhitelist
     const drizzle = action.drizzle
 
     // Initialize web3 and get the current network ID.
-    var web3 = yield call(initializeWeb3, { options: web3Options })
+    var web3 = yield call(initializeWeb3, { options: web3Options, networkWhitelist })
     drizzle.web3 = web3
 
     // Client may opt out of connecting their account to the dapp Guard against
@@ -24,7 +25,6 @@ export function * initializeDrizzle (action) {
       const networkId = yield call(getNetworkId, { web3 })
 
       // Check whether network is allowed
-      const networkWhitelist = options.networkWhitelist
       if (networkWhitelist.length &&
           networkId !== NETWORK_IDS.ganache &&
           !networkWhitelist.includes(networkId)) {

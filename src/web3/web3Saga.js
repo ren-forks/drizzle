@@ -1,13 +1,15 @@
 import { call, put } from 'redux-saga/effects'
 import * as Action from './constants'
 
+import { NETWORK_IDS } from '../web3/constants'
+
 var Web3 = require('web3')
 
 /*
  * Initialization
  */
 
-export function * initializeWeb3 ({ options }) {
+export function * initializeWeb3 ({ options, networkWhitelist }) {
   try {
     var web3 = {}
 
@@ -24,8 +26,8 @@ export function * initializeWeb3 ({ options }) {
       const networkId = yield call(getNetworkId, { web3 })
 
       // Check whether network is allowed
-      const networkWhitelist = options.networkWhitelist
-      if (!networkWhitelist.length ||
+      if (!networkWhitelist ||
+          !networkWhitelist.length ||
           networkId === NETWORK_IDS.ganache ||
           networkWhitelist.includes(networkId)) {
         try {
