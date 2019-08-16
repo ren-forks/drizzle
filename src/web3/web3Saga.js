@@ -13,8 +13,8 @@ export function * initializeWeb3 ({ options, networkWhitelist }) {
   try {
     var web3 = {}
 
-    if (options && options.web3 && options.web3.customProvider) {
-      web3 = new Web3(options.web3.customProvider)
+    if (options && options.customProvider) {
+      web3 = new Web3(options.customProvider)
       yield put({ type: Action.WEB3_INITIALIZED })
       return web3
     }
